@@ -96,7 +96,7 @@
                                 <td><?php echo $itemSellCount ?></td>
                                 <td><?php echo $itemSellCount ?></td>
                                 <td><?php echo $itemStatus ?></td>
-                                <td><button onclick="handleStatus('<?php echo $itemID ?>','<?php echo $itemStatus ?>','reject')">reject</button>||<button onclick="handleStatus('<?php echo $itemID ?>','<?php echo $itemStatus ?>','approve')">approve</button></td>
+                                <td><button style="background-color: #AFE1AF; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" onclick="handleStatus('<?php echo $itemID ?>', '<?php echo $itemStatus ?>', 'approve')">Publish</td>
                               </tr>
                     <?php
                           }

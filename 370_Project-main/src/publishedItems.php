@@ -84,13 +84,19 @@
                     $totalCost = 0;
                     if (mysqli_num_rows($result) > 0){
                         while ($row = mysqli_fetch_assoc($result)){
+                            $itemID=$row['f_id'];
                             $itemName = $row['name'];
                             $itemToken = $row['token'];
+                            $itemStatus=$row['status'];
                             $itemSellCount = $row['sellCount'];
                             ?>
                               <tr>
                                 <td><?php echo $itemName ?></td>
                                 <td><?php echo $itemSellCount ?></td>
+                                <td><button style="background-color: #ff6666; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" onclick="handleStatusPublished('<?php echo $itemID ?>', '<?php echo $itemStatus ?>', 'reject')">
+    Unpublish</button>
+</td>
+
                               </tr>
                     <?php
                           }
@@ -98,6 +104,21 @@
                   </tbody>
               </table>
             </div>
+            <div class="hidden">
+              <form action="handleStatusPublished.php" id='statusForm' method="post">
+                <input type="text" name="action">
+                <input type="text" name="itemID">
+                <input type="text" name="itemStatus">
+              </form>
+            </div>
+            <script>
+              function handleStatusPublished(itemID, itemStatus, action){
+                document.getElementById('statusForm').elements['action'].value = action;
+                document.getElementById('statusForm').elements['itemID'].value = itemID;
+                document.getElementById('statusForm').elements['itemStatus'].value = itemStatus;
+                document.getElementById('statusForm').submit();
+              }
+              </script>
           </div>
         </div>
       </section>

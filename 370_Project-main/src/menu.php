@@ -79,7 +79,7 @@
                     $itemID = $row['f_id'];
                     // k
                 ?>
-                <div onclick="handleForm('<?php echo $itemName?>','<?php echo $itemPrice ?>','<?php echo $useremail ?>','<?php echo $itemID ?>',)" class='w-full h-60 rounded-lg relative' style='background-image: linear-gradient(to top,rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2)),url(<?php echo $itemImage?>); background-size: cover; background-repeat: no-repeat;'>
+                <div onclick="handleAddingCart('<?php echo $itemName?>','<?php echo $itemPrice ?>','<?php echo $useremail ?>','<?php echo $itemID ?>',)" class='w-full h-60 rounded-lg relative' style='background-image: linear-gradient(to top,rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2)),url(<?php echo $itemImage?>); background-size: cover; background-repeat: no-repeat;'>
                   <div class='absolute top-4 right-6'>
                     <i class='fa-solid fa-cart-plus text-4xl text-white hover:text-[#FFBF00] hover pointer'></i>
                   </div>
@@ -106,7 +106,7 @@
                   </form>
                 </div>
                 <script>
-                  function handleForm(itemName, itemPrice, useremail, itemID) {
+                  function handleAddingCart(itemName, itemPrice, useremail, itemID) {
                     document.getElementById('addForm').elements['itemName'].value = itemName;
                     document.getElementById('addForm').elements['itemPrice'].value = itemPrice;
                     document.getElementById('addForm').elements['useremail'].value = useremail;
