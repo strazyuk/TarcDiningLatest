@@ -92,10 +92,22 @@
                     <select class="select w-full my-4 border-2 border-gray-300 px-4 font-semibold text-xl py-2" name="itemType" required>
                                                     <!--changed-->
                       <option disabled selected>Select Meal Category</option>
-                      <option> main course</option>
-                      <option>side dish</option>
-                      <option>Dairy Delights</option>
+                      <option>Main dish</option>
+                      <option>Side dish</option>
+        
                       <option>Beverages & Snacks</option>
+                      <option>Condiments</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                    <select class="select w-full my-4 border-2 border-gray-300 px-4 font-semibold text-xl py-2" name="itemTiming" required>
+                                                    <!--changed-->
+                      <option disabled selected>Select Meal timing</option>
+                      <option>Breakfast</option>
+                      <option>Lunch</option>
+                     <option>Dinner</option>
+                      <option>Snacks</option>
                     </select>
                   </div>
                 </div>

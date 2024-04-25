@@ -13,9 +13,9 @@
         theme: {
           extend: {
             colors: {
-              yellowPrimary: 'rgb(253 224 71)',
-              redSecondary: 'rgb(220 38 38)',
-              greenSecondary: 'rgb(34 197 94)',
+              yellowPrimary: '#FFBF00',
+              redSecondary: '#D2222D',
+              greenSecondary: '#008F11',
             }
           }
         }
@@ -24,21 +24,20 @@
 </head>
 <body>
     <header>
-    <nav class="h-24 px-60 flex justify-between items-center">
-        <div class="flex items-center">
-          <img class="h-16 w-16" src="../ICON/logo.png" alt="">
-          <h1 class="text-3xl font-bold ml-3">TarcDining</h1>
-        </div>  
-        <div class="flex items-center">
-            <div class="flex items-center hover:text-redSecondary">
-            <i class="fa-solid fa-house fa-rotate-by mr-2"></i>
-            <a href="studentHome.php" class="text-xl font-semibold uppercase">Home</a>
-            </div>
-          </div>
-          <div class="flex items-center ml-5 hover:text-redSecondary">
-            <i class="fa-solid fa-list mr-2"></i>
-            <a href="menu.php" class="text-xl font-semibold uppercase">Menu</a>
-    </div>
+        <nav class="h-24 px-60 flex justify-between items-center bg-yellowPrimary">
+            <div class="flex items-center">
+                <img class="h-16 w-16" src="../ICON/logo.png" alt="">
+                <h1 class="text-3xl font-bold ml-3">TarcDining</h1>
+            </div>  
+            <div class="flex items-center space-x-5">
+                <div class="flex items-center hover:text-redSecondary">
+                    <i class="fa-solid fa-house fa-rotate-by mr-2"></i>
+                    <a href="studentHome.php" class="text-xl font-semibold uppercase bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors duration-300">Home</a>
+                </div>
+                <div class="flex items-center hover:text-redSecondary">
+                    <i class="fa-solid fa-list mr-2"></i>
+                    <a href="menu.php" class="text-xl font-semibold uppercase bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600 transition-colors duration-300">Menu</a>
+                </div>
             </div>
             <div>
                 <?php
@@ -105,15 +104,7 @@
                 </table>
             </div>
             <div class="my-20">
-                <h1 class="text-2xl font-semibold">Token Need: <?php echo $totalCost; ?></h1>
-                <?php
-                    // Fetch token count from student table
-                    $query_token = "SELECT tokenCnt FROM student WHERE email = '$useremail'";
-                    $result_token = mysqli_query($conn, $query_token);
-                    $row_token = mysqli_fetch_assoc($result_token);
-                    $tokenCount = $row_token['tokenCnt'];
-                    echo "<h1 class='text-2xl font-semibold'>Total Token: $tokenCount</h1>";
-                ?>
+                <h1 class="text-2xl font-semibold">Total Token: <?php echo $totalCost; ?></h1>
             </div>
             <!-- Confirmation form -->
             <div>
@@ -124,6 +115,13 @@
             </div>
         </section>
     </main>
+    <div class="hidden">
+            <form action="handleRemoveCart.php" method="post" id="addForm">
+                <input type="text" name="useremail">
+                <input type="text" name="itemID">
+                <input type ="number" name ="totalCost">
+            </form>
+        </div>
     <script>
         function handleForm(useremail, itemID ,totalCost) {
             document.getElementById('addForm').elements['itemID'].value = itemID;

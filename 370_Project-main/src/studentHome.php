@@ -96,7 +96,50 @@
       <section class="h-80">
         <div class="bg-cover bg-center h-[30rem]" style="background-image: linear-gradient(to bottom right,rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)),url(../ICON/banner.jpg);">
           <h1 class="text-7xl font-bold text-center py-10 text-white">Welcome to TarcDining</h1>
-          <p class="text-center text-white text-lg">all-in-one solution for planning, organizing, and enjoying delicious meals effortlessly</p>
+          <div>
+            <?php
+             $currentHour = date('G');
+    
+            
+             $breakfastStart = 6; 
+             $breakfastEnd = 9;
+             $curTime='breakfast';   
+             
+             $lunchStart = 12; 
+             $lunchEnd = 14;  
+             
+             $afternoonSnackStart = 15; 
+             $afternoonSnackEnd = 17;   
+             
+             $dinnerStart = 18; 
+             $dinnerEnd = 21;  
+             
+             // Determine the current meal time
+             if ($currentHour >= $breakfastStart && $currentHour < $breakfastEnd) {
+             $state='morning';
+             $curTime='Breakfast';   
+                 
+             } elseif ($currentHour >= $lunchStart && $currentHour < $lunchEnd) {
+                 $state="afternoon";
+
+                 $curTime='Lunch';   
+                 
+             } elseif ($currentHour >= $afternoonSnackStart && $currentHour < $afternoonSnackEnd) {
+                 $state="afternoon";
+                 $curTime="Snacks";
+             } elseif ($currentHour >= $dinnerStart && $currentHour < $dinnerEnd) {
+                 $state="night";
+                 $curTime="Dinner";
+             } else {
+                 return "Outside of meal times";
+             }
+         
+            ?>
+          </div>
+          <div>
+               <p class="text-center text-white text-lg">Good <?php echo $state ;?>!! its <?php echo $curTime ;?> time</p>
+
+          </div>
         </div>
         </div>
       </section>
@@ -111,7 +154,7 @@
           <?php
             require_once('DBconnect.php');
             $useremail = $_COOKIE['email'];
-            $query = "SELECT * FROM curMenu where status = 'published' ORDER BY sellcount DESC LIMIT 6";
+            $query = "SELECT * FROM curMenu where status = 'published' and time='$curTime' AND (type = 'Main dish' OR type = 'Side dish') ORDER BY sellcount DESC LIMIT 6";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
               while ($row = mysqli_fetch_array($result)) {
@@ -146,13 +189,17 @@
             </swiper-container>
           <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
         </div>
+
         <div class="my-24 px-60">
-          <h1 class="my-16 text-5xl font-extrabold text-center"><i class="fa-regular fa-calender text-5xl mr-4"></i>Recently Added Items</h1>
+          <h1 class="my-16 text-5xl font-extrabold text-center"><i class="fa-regular fa-calender text-5xl mr-4"></i>Additional Items</h1>
           <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30" slides-per-view="3">
           <?php
             require_once('DBconnect.php');
             $useremail = $_COOKIE['email'];
-            $query = "SELECT * FROM curMenu ";
+            $query = "SELECT * FROM curMenu
+            WHERE status = 'published'
+              AND time = '$curTime'
+              AND (type = 'Condiments' OR type = 'Beverages & Snacks')";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
               

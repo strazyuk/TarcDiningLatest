@@ -1,9 +1,8 @@
 <?php 
 require_once('DBconnect.php');
-if (isset($_POST['itemID']) && isset($_POST['useremail']) && isset($_POST['totalCost'])){
+if (isset($_POST['itemID']) && isset($_POST['useremail'])){
     $productid = $_POST['itemID'];
     $useremail = $_POST['useremail'];
-    $totalCost=$_POST['totalCost'];
     $sql = "DELETE FROM cart WHERE email = '$useremail' AND f_id = '$productid'";
     $result = mysqli_query($conn, $sql);
     if ($result) {
