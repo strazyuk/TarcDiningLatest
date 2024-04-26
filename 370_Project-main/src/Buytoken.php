@@ -99,6 +99,10 @@
                         <h1 class="text-2xl font-semibold mr-4 w-72">Credit Card Info:</h1>
                         <input type="text" name="creditCardInfo" class="w-full h-12 border-2 border-gray-300 rounded-lg px-4 my-4" required>
                     </div>
+                    <div class="flex flex-row items-center mr-6">
+                        <h1 class="text-2xl font-semibold mr-4 w-72">Enter pin:</h1>
+                        <input type="password" name="creditCardPin" class="w-full h-12 border-2 border-gray-300 rounded-lg px-4 my-4" required>
+                    </div>
                     <input type="submit" value="Confirm Purchase" class="bg-yellow-300 py-3 w-full rounded-lg my-4">
                 </form>
             </div>

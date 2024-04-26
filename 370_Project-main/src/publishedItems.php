@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--changed-->
     <title>CurrentItems</title>
     <!-- design plugs -->
     <script src="https://kit.fontawesome.com/5f28ebb90a.js" crossorigin="anonymous"></script>
@@ -35,6 +34,9 @@
                 $username = $_COOKIE['username'];
             } else {
                 echo "No username cookie set";
+                // Redirect to login page if user is not logged in
+                header("Location: admin_login.php");
+                exit(); // Stop further execution
             }
             ?>
         <div>
@@ -70,37 +72,41 @@
                   <thead>
                       <tr>
                           <th class="uppercase">Food Name</th>
-                        <!--  <th class="uppercase">Product Price</th>-->
-                        <!--  <th class="uppercase">sellername</th>-->
+                          <!-- <th class="uppercase">Product Price</th>-->
+                          <!-- <th class="uppercase">sellername</th>-->
                           <th class="uppercase">Total sold</th>
+                          <th class="uppercase">Action</th>
                       </tr>
                   </thead>
                   <tbody>
                   <?php 
                     require_once('DBconnect.php');
-                    $useremail = $_COOKIE['email'];
-                    $query = "SELECT * FROM curMenu where status = 'published'";
-                    $result = mysqli_query($conn, $query);
-                    $totalCost = 0;
-                    if (mysqli_num_rows($result) > 0){
-                        while ($row = mysqli_fetch_assoc($result)){
-                            $itemID=$row['f_id'];
-                            $itemName = $row['name'];
-                            $itemToken = $row['token'];
-                            $itemStatus=$row['status'];
-                            $itemSellCount = $row['sellCount'];
-                            ?>
-                              <tr>
-                                <td><?php echo $itemName ?></td>
-                                <td><?php echo $itemSellCount ?></td>
-                                <td><button style="background-color: #ff6666; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" onclick="handleStatusPublished('<?php echo $itemID ?>', '<?php echo $itemStatus ?>', 'reject')">
-    Unpublish</button>
-</td>
-
-                              </tr>
-                    <?php
-                          }
-                    }?>
+                    // Check if user is logged in
+                    if(isset($_COOKIE['username'])) {
+                        $useremail = $_COOKIE['email'];
+                        $query = "SELECT * FROM curMenu where status = 'published'";
+                        $result = mysqli_query($conn, $query);
+                        $totalCost = 0;
+                        if (mysqli_num_rows($result) > 0){
+                            while ($row = mysqli_fetch_assoc($result)){
+                                $itemID=$row['f_id'];
+                                $itemName = $row['name'];
+                                $itemToken = $row['token'];
+                                $itemStatus=$row['status'];
+                                $itemSellCount = $row['sellCount'];
+                                ?>
+                                    <tr>
+                                        <td><?php echo $itemName ?></td>
+                                        <td><?php echo $itemSellCount ?></td>
+                                        <td><button style="background-color: #ff6666; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" onclick="handleStatusPublished('<?php echo $itemID ?>', '<?php echo $itemStatus ?>', 'reject')">Unpublish</button></td>
+                                    </tr>
+                            <?php
+                                }
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>Please log in to view this content.</td></tr>";
+                    }
+                    ?>
                   </tbody>
               </table>
             </div>

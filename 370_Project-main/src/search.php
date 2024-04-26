@@ -4,11 +4,9 @@ require_once('DBconnect.php');
 
 // Check if the search form is submitted
 if(isset($_POST['search'])) {
-    // Sanitize the user input to prevent SQL injection
-    $search = mysqli_real_escape_string($conn, $_POST['search']);
 
     // Perform the search query
-    $query = "SELECT * FROM curMenu WHERE name LIKE '%$search%'";
+    $query = "SELECT * FROM curMenu WHERE name LIKE '%$search%' and status ='published'";
     $result = mysqli_query($conn, $query);
 
     // Display search results

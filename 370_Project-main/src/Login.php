@@ -27,7 +27,7 @@
       <img src="../ICON/logo.png" alt="">
     </div>
     <div class="bg-yellowPrimary justify-start items-center flex px-4 md:px-10 rounded-r-xl md:col-span-2">
-      <div class="flex flex-col w-full md:max-w-md mx-auto">
+      <div class="flex-col mx-auto">
       <h1 class="text-4xl font-bold mb-6">Login</h1>
       <!-- Display error message if exists -->
       <?php if(isset($_GET['error']) && $_GET['error'] == 'invalid'): ?>
@@ -56,31 +56,43 @@
 <?php
 require_once('DBconnect.php');
 
-if(isset($_POST['email']) && isset($_POST['password'])){
+if (isset($_POST['email']) && isset($_POST['password'])) {
     $e = $_POST['email'];
     $p = $_POST['password'];
-    $sql = "SELECT * FROM user WHERE email = '$e' AND password = '$p'";
+
+    $sql = "SELECT * FROM user WHERE email = '$e'";
     $result = mysqli_query($conn, $sql);
-    if(mysqli_num_rows($result) != 0){
+
+    if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        $role = $row['role'];
-        $username = $row['username']; 
-        $email = $row['email'];
-        setcookie('username', '', time() + 86400, "/"); // Expires in one day
-        setcookie('username', $username, time() + 86400, "/"); 
-        setcookie('email', '', time() + 86400, "/"); 
-        setcookie('email', $email, time() + 86400, "/"); 
-        setcookie('role', '', time() + 86400, "/"); 
-        setcookie('role', $role, time() + 86400, "/"); 
-        if ($role == 'student'){
-            header("Location: studentHome.php");
-            exit(); // Stop further execution
+
+        $hashed_password = $row['password'];
+
+        
+        if (password_verify($p, $hashed_password)) {
+            $role = $row['role'];
+            $username = $row['username'];
+            $email = $row['email'];
+
+            setcookie('username', $username, time() + 3000, "/");
+            setcookie('email', $email, time() + 3000, "/");
+            setcookie('role', $role, time() + 3000, "/");
+
+            // Redirect the user based on their role
+            if ($role == 'student') {
+                header("Location: studentHome.php");
+                exit();
+            } else {
+            }
+        } else {
+            
+            header("Location: login.php ");
+            exit();
         }
-    }
-    else{
-        // Redirect back to login page with error message
+    } else {
+       
         header("Location: login.php?error=invalid");
-        exit(); // Stop further execution
+        exit();
     }
 }
 ?>

@@ -31,48 +31,56 @@
             <div class="flex flex-col w-full md:max-w-md mx-auto">
                 <h1 class="text-4xl font-bold mb-6">Sign Up</h1>
                 <?php
-                require_once('DBconnect.php');
+require_once('DBconnect.php');
 
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $email = $_POST['email'];
-                    $password = $_POST['password'];
-
-                    // Check if the email ends with @g.bracu.ac.bd
-                    $domain = explode("@", $email)[1];
-                    if ($domain !== "g.bracu.ac.bd") {
-                        echo "<span style='color: red;'>Please use your G-suite email.</span>";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $username = $_POST['username'];
+    $domain = explode("@", $email)[1];
+    
+    // Check if email domain is valid
+    if ($domain !== "g.bracu.ac.bd") {
+        echo "<span style='color: red;'>Please use your G-suite email.</span>";
+    } else {
+        // Check password length
+        if (strlen($password) < 8) {
+            echo "<span style='color: red;'>Password must be at least 8 characters long.</span>";
+        } else {
+            // Check if the email already exists
+            $check_email_query = "SELECT * FROM user WHERE email='$email'";
+            $check_email_result = mysqli_query($conn, $check_email_query);
+            
+            if (mysqli_num_rows($check_email_result) > 0) {
+                echo "<span style='color: red;'>An account with this email already exists.</span>";
+            } else {
+                $check_password_query = "SELECT * FROM user WHERE password='$password'";
+                
+                    $role = 'student';
+                    $password = password_hash($password, PASSWORD_BCRYPT);
+                    
+                    $sql = "INSERT INTO user (email, username, password, role) VALUES ('$email', '$username', '$password', '$role')";
+                    $result = mysqli_query($conn, $sql);
+                    
+                    if ($result) {
+                        $tokens = 0;
+                        
+                        // Insert new student into the database
+                        $sql = "INSERT INTO student (email, tokenCnt) VALUES ('$email', '$tokens')";
+                        $result = mysqli_query($conn, $sql);
+                        
+                        // Redirect to login page after successful signup
+                        header("Location: login.php");
                     } else {
-                        // Check if the email already exists
-                        $check_email_query = "SELECT * FROM user WHERE email='$email'";
-                        $check_email_result = mysqli_query($conn, $check_email_query);
-                        if (mysqli_num_rows($check_email_result) > 0) {
-                            echo "<span style='color: red;'>An account with this email already exists.</span>";
-                        } else {
-                            // Check if the password already exists
-                            $check_password_query = "SELECT * FROM user WHERE password='$password'";
-                            $check_password_result = mysqli_query($conn, $check_password_query);
-                            if (mysqli_num_rows($check_password_result) > 0) {
-                                echo "<span style='color: red;'>A user with this password already exists.</span>";
-                            } else {
-                                // Insert new user if account doesn't exist
-                                $role = 'student'; // Since we removed admin option
-                                $username = $_POST['username'];
-                                $sql = "INSERT INTO user (email, username, password, role) VALUES ('$email', '$username', '$password', '$role')";
-                                $result = mysqli_query($conn, $sql);
-                                if (mysqli_affected_rows($conn)) {
-                                    $tokens = 0;
-                                    // Continue with inserting new customer
-                                    $sql = "INSERT INTO student (email, tokenCnt) VALUES ('$email', '$tokens')";
-                                    $result = mysqli_query($conn, $sql);
-                                    header("Location: login.php");
-                                } else {
-                                    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-                                }
-                            }
-                        }
+                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                     }
                 }
-                ?>
+            }
+        }
+    }
+
+?>
+
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div>
                         <input class="px-4 py-2 rounded-md border border-solid w-full mb-3" type="text" name="username" placeholder="Enter your username......" required>
@@ -80,6 +88,9 @@
                         <input class="px-4 py-2 rounded-md border border-solid w-full mb-3" type="password" name="password" placeholder="Enter your userpassword......" required>
                     </div>
                     <input type="submit" value="Sign up" class="px-6 py-2 bg-greenSecondary font-bold uppercase rounded-md text-white cursor-pointer transition duration-300 ease-in">
+                    <div class="my-2">
+                            <span class="text-greenSecondary: 'rgb(34 197 94) hover:text-blue-700 hover:underline"><a href="Login.php">LOG IN</a></span></h1>
+                    </div>
                 </form>
             </div>
         </div>

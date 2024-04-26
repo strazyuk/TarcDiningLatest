@@ -43,12 +43,9 @@
                   $role = $row['role'];
                   $username = $row['username']; 
                   $email = $row['email'];
-                  setcookie('username', '', time() + 86400, "/");
-                  setcookie('username', $username, time() + 86400 * 30, "/");
-                  setcookie('email', '', time() + 86400 * 30, "/");
-                  setcookie('email', $email, time() + 86400 * 30, "/");
-                  setcookie('role', '', time() + 86400 * 30, "/");
-                  setcookie('role', $role, time() + 86400 * 30, "/");
+                  setcookie('username', $username, time() + 3000, "/");
+                  setcookie('email', $email, time() + 3000, "/");
+                  setcookie('role', $role, time() + 3000, "/");
                   if ($role == 'admin'){
                       header("Location: adminHome.php");
                       exit(); // Stop further execution
@@ -76,6 +73,9 @@
         <input class="px-4 py-2 rounded-md border border-solid w-full mb-3" type="password" name="password" placeholder="Enter your password......" required>
         </div>
         <input type="submit" value="Login" class="px-6 py-2 bg-greenSecondary font-bold uppercase rounded-md text-white cursor-pointer transition duration-300 ease-in">
+        <div class="my-2">
+                            <span class="text-greenSecondary: 'rgb(34 197 94) hover:text-blue-700 hover:underline"><a href="Login.php">USER LOG IN</a></span></h1>
+        </div>
       </form>
       </div>
     </div>

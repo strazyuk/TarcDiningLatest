@@ -27,8 +27,9 @@
       <nav class="h-24 px-40 flex justify-between items-center">
         <div class="flex items-center">
           <img class="h-16 w-16" src="../ICON/logo.png" alt="">
-          <h1 class="text-3xl font-bold ml-3">TarcDining</h1>
+          <h1 class="text-3xl font-bold ml-3">UNIDining</h1>
         </div>  
+        <?php require_once('DBconnect.php'); ?>
         <?php
             if(isset($_COOKIE['username'])) {
                 $username = $_COOKIE['username'];
@@ -56,7 +57,7 @@
               </div>
               <div class="flex items-center hover:text-redSecondary">
                 <i class="fa-solid fa-plus mr-2"></i>
-                <a href='addProducts.php' class="text-lg font-semibold uppercase">Add </a>
+                <a href='addfoods.php' class="text-lg font-semibold uppercase">Add </a>
               </div>
               <div class="flex items-center hover:text-redSecondary">
                 <i class="fa-solid fa-plus mr-2"></i>
@@ -69,57 +70,66 @@
             </div>
           </div>
           <?php
-            require_once('DBconnect.php');
-
             // Retrieve admins data from the database
             $queryAdmin = "SELECT email, username FROM user WHERE role = 'admin'";
             $resultAdmin = mysqli_query($conn, $queryAdmin);
 
             // Retrieve non-admin users data from the database
-            $queryUser = "SELECT email, username FROM user WHERE role <> 'admin'";
-            $resultUser = mysqli_query($conn, $queryUser);
-
-            echo "<div class='col-span-5 bg-white rounded-tl-3xl h-screen pl-12 pt-12 overflow-auto'>";
-            echo "<div class='col-span-5 bg-white rounded-tl-3xl h-screen pl-12 pt-12 overflow-auto'>";
-            echo "<div class='grid grid-cols-2 gap-8'>";
-            echo "<div>";
-            echo "<h2 class='text-2xl font-semibold mb-4'>Admins</h2>";
-            if (mysqli_num_rows($resultAdmin) > 0) {
-              echo "<table>";
-              echo "<tr><th>Email</th><th>Name</th></tr>";
-              while ($row = mysqli_fetch_assoc($resultAdmin)) {
-                echo "<tr>";
-                echo "<td>" . $row['email'] . "</td>";
-                echo "<td>" . $row['username'] . "</td>";
-                echo "</tr>";
-              }
-              echo "</table>";
-            } else {
-              echo "No admins found.";
-            }
-            echo "</div>";
-            echo "<div>";
-            echo "<h2 class='text-2xl font-semibold mb-4'>Users</h2>";
-            if (mysqli_num_rows($resultUser) > 0) {
-              echo "<table>";
-              echo "<tr><th>Email</th><th>Name</th></tr>";
-              while ($row = mysqli_fetch_assoc($resultUser)) {
-                echo "<tr>";
-                echo "<td>" . $row['email'] . "</td>";
-                echo "<td>" . $row['username'] . "</td>";
-                echo "</tr>";
-              }
-              echo "</table>";
-            } else {
-              echo "No users found.";
-            }
-            echo "</div>";
-            echo "</div>";
-            echo "</div>";
-
-            echo "</table>";
-            echo "</div>";
+            $queryStudent = "SELECT email, username FROM user WHERE role  = 'student'";
+            $resultUser = mysqli_query($conn, $queryStudent);
           ?>
+          <div class="col-span-5 bg-white rounded-tl-3xl h-screen pl-12 pt-12 overflow-auto">
+                  <div class="grid grid-cols-2 gap-8">
+                      <div>
+                          <h2 class='text-2xl font-semibold mb-4'>Admins</h2>
+                          <?php if (mysqli_num_rows($resultAdmin) > 0) { ?>
+                              <table>
+                                  <tr><th>Email</th><th>Name</th><th>Action</th></tr>
+                                  <?php while ($row = mysqli_fetch_assoc($resultAdmin)) { ?>
+                                      <tr>
+                                          <td class="py-2 px-4 border-b border-gray-300"><?php echo $row['email']; ?></td>
+                                          <td class="py-2 px-4 border-b border-gray-300"><?php echo $row['username']; ?></td>
+                                          <td class="py-2 px-4 border-b border-gray-300">
+                                              <!-- Form to handle deletion -->
+                                           
+                                          </td>
+                                      </tr>
+                                  <?php } ?>
+                              </table>
+                          <?php } else { ?>
+                              <p>No admins found.</p>
+                          <?php } ?>
+                      </div>
+                      <div>
+                          <h2 class='text-2xl font-semibold mb-4 px-4'>Users</h2>
+                          <?php if (mysqli_num_rows($resultUser) > 0) { ?>
+                              <table>
+                                  <tr><th>Email</th><th>Name</th><th>Action</th></tr>
+                                  <?php while ($row = mysqli_fetch_assoc($resultUser)) { ?>
+                                      <tr>
+                                          <td class="py-2 px-4 border-b border-gray-300"><?php echo $row['email']; ?></td>
+                                          <td class="py-2 px-4 border-b border-gray-300"><?php echo $row['username']; ?></td>
+                                          <td class="py-2 px-4 border-b border-gray-300">
+                                          
+                                              <!-- Form to handle deletion -->
+                                              <form method="POST" action="deleteUser.php">
+                                                  <!-- Hidden input for email -->
+                                                  <input type="hidden" name="email" value="<?php echo $row['email']; ?>">
+                                                  <!-- Delete button -->
+                                                  <button type="submit" class="btn btn-error">Delete</button>
+                                              </form>
+                                          </td>
+                                      </tr>
+                                  <?php } ?>
+                              </table>
+                          <?php } else { ?>
+                              <p>No users found.</p>
+                          <?php } ?>
+                      </div>
+                  </div>
+              </div>
+
+          <?php mysqli_close($conn); ?>
         </div>
       </section>
     </main>

@@ -27,13 +27,14 @@
       <nav class="h-24 px-40 flex justify-between items-center">
         <div class="flex items-center">
           <img class="h-16 w-16" src="../ICON/logo.png" alt="">
-          <h1 class="text-3xl font-bold ml-3">TarcDining</h1>
+          <h1 class="text-3xl font-bold ml-3">UNIDining</h1>
         </div> 
         <?php
             if(isset($_COOKIE['username'])) {
                 $username = $_COOKIE['username'];
             } else {
-                echo "No username cookie set";
+                header("Location: admin_login.php");
+                exit(); // Stop further execution
             }
         ?> 
         <div>
@@ -56,7 +57,7 @@
               </div>
               <div class="flex items-center hover:text-redSecondary">
                 <i class="fa-solid fa-plus mr-2"></i>
-                <a href='addProducts.php' class="text-lg font-semibold uppercase">Add </a>
+                <a href='addfoods.php' class="text-lg font-semibold uppercase">Add </a>
               </div>
               <div class="flex items-center hover:text-redSecondary">
                 <i class="fa-solid fa-plus mr-2"></i>

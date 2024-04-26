@@ -23,22 +23,27 @@
     </script>
 </head>
 <body>
-    <header>
-        <nav class="h-24 px-60 flex justify-between items-center bg-yellowPrimary">
-            <div class="flex items-center">
-                <img class="h-16 w-16" src="../ICON/logo.png" alt="">
-                <h1 class="text-3xl font-bold ml-3">TarcDining</h1>
-            </div>  
-            <div class="flex items-center space-x-5">
-                <div class="flex items-center hover:text-redSecondary">
-                    <i class="fa-solid fa-house fa-rotate-by mr-2"></i>
-                    <a href="studentHome.php" class="text-xl font-semibold uppercase bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors duration-300">Home</a>
-                </div>
-                <div class="flex items-center hover:text-redSecondary">
-                    <i class="fa-solid fa-list mr-2"></i>
-                    <a href="menu.php" class="text-xl font-semibold uppercase bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600 transition-colors duration-300">Menu</a>
-                </div>
-            </div>
+  <header>
+    <nav class="h-24 px-60 flex justify-between items-center">
+        <div class="flex items-center">
+          <img class="h-16 w-16" src="../ICON/logo.png" alt="">
+          <h1 class="text-3xl font-bold ml-3">UNIDining</h1>
+        </div>  
+        <div class="flex items-center">
+          <div class="flex items-center hover:text-redSecondary">
+            <i class="fa-solid fa-house fa-rotate-by mr-2"></i>
+            <a href="studentHome.php" class="text-xl font-semibold uppercase">Home</a>
+          </div>
+                <div class='flex items-center ml-5 hover:text-redSecondary'>
+                <i class="fa-solid fa-list mr-2"></i>
+                  <a href='menu.php' class='text-xl font-semibold uppercase text-black rounded-md px-4 py-2'>Menu</a>
+          </div>
+        </div>
+        <form action="search.php" method="post" class="flex items-center">
+          <input type="text" name="search" placeholder="Search for food" class="px-3 py-1 border border-gray-300 rounded-md">
+          <button type="submit" class="ml-2 px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700">Search</button>
+        </form>
+        <div>
             <div>
                 <?php
                     if(isset($_COOKIE['username'])) {
@@ -49,7 +54,9 @@
                             <h1 class='text-xl font-semibold uppercase'>$username</h1>
                         </div>";
                     } else {
-                        echo "No username cookie set";
+                        // Redirect to login page if user is not logged in
+                        header("Location: login.php");
+                        exit(); // Stop further execution
                     }
                 ?>
             </div>
@@ -104,9 +111,18 @@
                 </table>
             </div>
             <div class="my-20">
-                <h1 class="text-2xl font-semibold">Total Token: <?php echo $totalCost; ?></h1>
+                <h1 class="text-2xl font-semibold uppercase">Total Token: <?php echo $totalCost; ?></h1>    
+                <?php
+                    require_once('DBconnect.php');
+                    $useremail = $_COOKIE['email'];
+                    $query = "SELECT tokenCnt FROM student WHERE email = '$useremail'";
+                    $result = mysqli_query($conn, $query);
+                    $row = mysqli_fetch_assoc($result);
+                    $tokenLeft = $row['tokenCnt'];
+                ?>
+                <br>
+                <h1 class="text-2xl font-semibold uppercase">Token Left:<?php echo $tokenLeft; ?></h1>
             </div>
-            <!-- Confirmation form -->
             <div>
                 <form action="payment.php" method="post">
                     <input type="hidden" name="total_cost" value="<?php echo $totalCost; ?>">

@@ -95,7 +95,7 @@
     <main>
       <section class="h-80">
         <div class="bg-cover bg-center h-[30rem]" style="background-image: linear-gradient(to bottom right,rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)),url(../ICON/banner.jpg);">
-          <h1 class="text-7xl font-bold text-center py-10 text-white">Welcome to TarcDining</h1>
+          <h1 class="text-7xl font-bold text-center py-10 text-white">Welcome to UniDining</h1>
           <div>
             <?php
              $currentHour = date('G');
@@ -112,9 +112,8 @@
              $afternoonSnackEnd = 17;   
              
              $dinnerStart = 18; 
-             $dinnerEnd = 21;  
-             
-             // Determine the current meal time
+             $dinnerEnd = 24;  
+
              if ($currentHour >= $breakfastStart && $currentHour < $breakfastEnd) {
              $state='morning';
              $curTime='Breakfast';   
@@ -145,10 +144,6 @@
       </section>
       <section>
         <div class="my-56 px-60">
-          <!-- <form action="search.php" method="GET" class="mb-6">
-            <input type="text" name="search" placeholder="Search for food items" class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">Search</button>
-          </form> -->
           <h1 class="my-16 text-5xl font-extrabold text-center"><i class="fa-solid fa-chart-line text-5xl mr-4"></i>Trending Items</h1>
           <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30" slides-per-view="3">
           <?php
