@@ -115,7 +115,7 @@
                 // Check if user is logged in
                 if(isset($_COOKIE['username'])) {
                     $useremail = $_COOKIE['email'];
-                    $query = "SELECT * FROM curMenu";
+                    $query = "SELECT * FROM curMenu where name like '%$search%' and status='published' and time = '$curtime' ";
                     
                     $result = mysqli_query($conn, $query);
                     if (mysqli_num_rows($result) > 0) {

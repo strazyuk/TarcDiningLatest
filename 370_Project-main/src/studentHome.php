@@ -132,6 +132,8 @@
              } else {
                  return "Outside of meal times";
              }
+             $curTime='Breakfast';
+             $state='morning';
          
             ?>
           </div>
@@ -149,7 +151,7 @@
           <?php
             require_once('DBconnect.php');
             $useremail = $_COOKIE['email'];
-            $query = "SELECT * FROM curMenu where status = 'published' and time='$curTime' AND (type = 'Main dish' OR type = 'Side dish') ORDER BY sellcount DESC LIMIT 6";
+            $query = "SELECT * FROM curMenu where status = 'published' and time='Breakfast' AND (type = 'Main dish' OR type = 'Side dish') ORDER BY sellcount DESC LIMIT 6";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
               while ($row = mysqli_fetch_array($result)) {
